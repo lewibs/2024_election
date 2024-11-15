@@ -1,8 +1,8 @@
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
+import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, accuracy_score
+from sklearn.tree import export_text
 import numpy as np
 import pandas as pd
 
@@ -100,7 +100,6 @@ ypairs = [
 def make_map(pairs, data):
     m = {}
     for [key, value, one_hot] in pairs:
-        print(f"Processing key: {key}")
         
         # Initialize the dictionary entry for the key
         m[key] = [key, value, {}]
@@ -112,26 +111,71 @@ def make_map(pairs, data):
             m[key][2]["length"] = len(unique_values)
             for i, value in enumerate(unique_values):
                 m[key][2][value] = i
-        
+        else:
+            m[key][2]["length"] = 0
+
     return m
 
+def one_hot_encode(data, dataMap):
+    encoded_data = []
+
+    for key in dataMap:
+        col_data = []
+        question = dataMap[key]
+        length = question[2]["length"]
+
+        if length:
+            column = data[key]
+            for value in column:
+                encode = np.zeros(length)
+                encode[dataMap[key][2][value]] = 1
+                col_data.append(encode)
+        else:
+            for value in data[key]:
+                col_data.append(np.array([value]))
+        encoded_data.append(col_data)
+
+    
+    encoded_data = list(zip(*encoded_data))
+    encoded_data = [np.concatenate(row) for row in encoded_data]
+
+    return encoded_data
 
 # Load data from CSV
 data = pd.read_csv('./anes_timeseries_2020_csv_20220210.csv')
 
-xkeys = make_map(xpairs, data)
-ykeys = make_map(ypairs, data) 
+xMap = make_map(xpairs, data)
+
+yMap = make_map(ypairs, data)
 # Print the headers
-print(ykeys)
+X = one_hot_encode(data, xMap)
+y = one_hot_encode(data, yMap)
 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# # Assume the features are in columns 'Feature1' and 'Feature2', and 'Label' is the target column
-# X = data[['Feature1', 'Feature2']].values  # Features
-# y = data['Label'].values  # Target labels
+# Initialize the decision tree classifier
+clf = DecisionTreeClassifier(max_depth=5, random_state=42)
 
-# # Sample dataset
-# X = np.array([[2.5, 'A'], [7.5, 'B'], [3.0, 'A'], [9.5, 'B'], [4.5, 'A'], [8.5, 'B'], [5.5, 'A'], [6.5, 'B']])
-# y = np.array([0, 1, 0, 1, 0, 1, 0, 1])
+# Train the model
+clf.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = clf.predict(X_test)
+
+# Evaluate the model
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
+
+# Display the decision tree structure
+# tree_rules = export_text(clf, feature_names=[f"Feature_{i}" for i in range(np.array(X).shape[1])])
+# print("\nDecision Tree Rules:\n", tree_rules)
+
+# # Example: Check feature importance
+# importances = clf.feature_importances_
+
+# # # Display the sorted features with their importance
+# for idx in importances:
+#     print(f"Feature {idx}: {data.columns[idx]} - Importance: {importances[idx]}")
 
 # # Define preprocessor for different types of features
 # preprocessor = ColumnTransformer(
@@ -145,13 +189,3 @@ print(ykeys)
 #     ('preprocessor', preprocessor),
 #     ('classifier', DecisionTreeClassifier(max_depth=3, random_state=42))
 # ])
-
-# # Split data into training and testing sets
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# # Train the model
-# pipeline.fit(X_train, y_train)
-
-# # Make predictions
-# predictions = pipeline.predict(X_test)
-# print("Predictions:", predictions)
