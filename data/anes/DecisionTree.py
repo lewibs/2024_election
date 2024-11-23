@@ -239,46 +239,46 @@ def filter_questions(all_questions, filter_array):
 make_clasifier("All Questions", xpairs, ypairs, data, True)
 
 hispanics = [
-    "V202220", "V202232", "V202233", "V202234"
+    "V202220", "V202232", "V202233",
 ]
 
-make_clasifier("Hispanic Questions", filter_questions(xpairs, hispanics), ypairs, data, True)
+make_clasifier("## Hispanic Questions", filter_questions(xpairs, hispanics), ypairs, data, True)
 
 blacks = [
     "V202221"
 ]
 
-make_clasifier("Black Questions", filter_questions(xpairs, blacks), ypairs, data, True)
+make_clasifier("## Black Questions", filter_questions(xpairs, blacks), ypairs, data, True)
 
 asians = [
     "V202222"
 ]
 
-make_clasifier("Asian Questions", filter_questions(xpairs, asians), ypairs, data, True)
+make_clasifier("## Asian Questions", filter_questions(xpairs, asians), ypairs, data, True)
 
 lgbt = [
     "V202223"
 ]
 
-make_clasifier("LGBT Questions", filter_questions(xpairs, lgbt), ypairs, data, True)
+make_clasifier("## LGBT Questions", filter_questions(xpairs, lgbt), ypairs, data, True)
 
 women = [
     "V202224"
 ]
 
-make_clasifier("Woman Questions", filter_questions(xpairs, women), ypairs, data, True)
+make_clasifier("## Woman Questions", filter_questions(xpairs, women), ypairs, data, True)
 
 immigration_related = [
     "V202232", "V202233", "V202237", "V202238", "V202243"
 ]
 
-make_clasifier("Immigration Questions", filter_questions(xpairs, immigration_related), ypairs, data, True)
+make_clasifier("## Immigration Questions", filter_questions(xpairs, immigration_related), ypairs, data, True)
 
 issues_of_interest = [
     "V202205y1", "V202249", "V202253", "V202257", "V202260"
 ]
 
-make_clasifier("Issues of Interest Questions", filter_questions(xpairs, issues_of_interest), ypairs, data, True)
+make_clasifier("## Issues of Interest Questions", filter_questions(xpairs, issues_of_interest), ypairs, data, True)
 
 political_participation = [
     "V202001", "V202008", "V202009", "V202013", "V202014", "V202015", "V202016", "V202017",
@@ -287,7 +287,7 @@ political_participation = [
     "V202061", "V202074", "V202075", "V202118", "V202119"
 ]
 
-make_clasifier("Political Perticipation Questions", filter_questions(xpairs, political_participation), ypairs, data, True)
+make_clasifier("## Political Perticipation Questions", filter_questions(xpairs, political_participation), ypairs, data, True)
 
 sociopolitical_views = [
     "V202159", "V202160", "V202161", "V202162", "V202163", "V202164", "V202165", "V202166", 
@@ -296,7 +296,7 @@ sociopolitical_views = [
     "V202183", "V202184", "V202185", "V202186", "V202187"
 ]
 
-make_clasifier("Sociopolitical View Questions", filter_questions(xpairs, sociopolitical_views), ypairs, data, True)
+make_clasifier("## Sociopolitical View Questions", filter_questions(xpairs, sociopolitical_views), ypairs, data, True)
 
 
 for pair in xpairs:
@@ -324,7 +324,7 @@ for pair in xpairs:
     question = pair[1]
     is_temperature = not pair[2]
 
-    print(question_key, question)
+    print("##", question_key, question)
     if is_temperature:
         print(f"{'Temp':<10}{'Prediction':<20}{'Confidence':<10}")
         for temp in range(100):
