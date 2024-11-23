@@ -181,11 +181,14 @@ def decode_prediction(answer, output, labelMap):
     decoding_map = {value: key for key, value in encoding_map.items() if key != "length"}
     return decoding_map[np.argmax(output == 1)]
 
-def make_prediction(predictor, xMap, yMap, question_code, answer_code, question_answer):
-    one_hot = [answer_to_one_hot(question_code, question_answer, xMap)]
+def make_prediction(predictor, xMap, yMap, is_temperature, question_code, answer_code, question_answer):
+    if is_temperature:
+        one_hot = [[question_answer]]
+    else:
+        one_hot = [answer_to_one_hot(question_code, question_answer, xMap)]
     answer_one_hot = predictor.predict(one_hot)[0]
     answer_index = np.argmax(answer_one_hot == 1)
-    answer_prediction = predictor.predict_proba(one_hot)[answer_index][0][1]
+    answer_prediction = predictor.predict_proba(one_hot)[answer_index][0]
     answer = decode_prediction(answer_code, answer_one_hot, yMap)
     return answer, answer_prediction
 
@@ -255,6 +258,23 @@ for pair in xpairs:
         12: "Specified as refused"
     }
 
-    single_question_clasifier, xMap, yMap = make_clasifier(pair[1], [pair], ypairs, data, True)
+    single_question_clasifier, xMap, yMap = make_clasifier(pair[0] + " " + pair[1], [pair], ypairs, data, False)
+    question_key = pair[0]
+    question = pair[1]
+    is_temperature = not pair[2]
 
-    # print(response_map[make_prediction(single_question_clasifier, xMap, yMap, "V202237", answer_key, 1)])
+    print(question_key, question)
+    if is_temperature:
+        print(f"{'Temp':<10}{'Prediction':<20}{'Confidence':<10}")
+        for temp in range(100):
+            prediction, confidence = make_prediction(single_question_clasifier, xMap, yMap, is_temperature, question_key, answer_key, temp)
+            print(f"{temp:<10}{response_map[prediction]:<20}{max(confidence):<10.2f}")
+    else:
+        print(f"{'Answer':<10}{'Prediction':<20}{'Confidence':<10}")
+        for persons_answer in xMap[question_key][2]:
+            if persons_answer != "length" and int(persons_answer) >= 0:
+                prediction, confidence = make_prediction(single_question_clasifier, xMap, yMap, is_temperature, question_key, answer_key, persons_answer)
+                print(f"{persons_answer:<10}{response_map[prediction]:<20}{max(confidence):<10.2f}")
+
+    print("")
+
