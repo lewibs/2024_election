@@ -8,37 +8,37 @@ import numpy as np
 import pandas as pd
 
 xpairs = [
-    # ["V202001", "SELECT LANGUAGE", True],
-    # ["V202008", "DID PEOPLE TELL YOU TO VOTE", True],
-    # ["V202009", "DID YOU TELL PEOPLE WHY THEY SHOULD VOTE", True],
-    # ["V202013", "DID YOU PARTICIPATE IN ANY ONLINE MEETING, RALLIE, SPEACHES, OR FUNDRAISERS", True],
-    # ["V202014", "DID YOU GO TO ANY IN ANY IN PERSON MEETING, RALLIE, SPEACHES, OR FUNDRAISERS", True],
-    # ["V202015", "DO YOU WEAR ANY CAMPAIN MERCH", True],
-    # ["V202016", "DID YOU DO ANY WORK FOR A CANDIDATE", True],
-    # ["V202017", "DID YOU DONATE TO A CANDIDATE", True],
-    # ["V202019", "DID YOU DONATE ANY MONEY TO A PARTY", True],
-    # ["V202022", "DO YOU DISCUSS POLITICS WITH FAMILY OR FRIENDS", True],
-    # ["V202023", "HOW OFTEN DO YOU DISCUSS POLOTICS IN A WEEK", True],
-    # ["V202024", "HAVE YOU GOTTEN INTO A POLITICAL ARGUMENT IN THE LAST 12 MONTHS", True],
-    # ["V202025", "IN THE LAST 12 MONTHS HAVE YOU GONE TO A PROTEXT, MARCH, RALLY, OR DEMINSTRATION", True],
-    # ["V202026", "IN THE LAST 12 MONTHS HAVE YOU SIGNED A PETITION", True],
-    # ["V202027", "IN THE LAST 12 MONTHS HAVE YOU GIVEN MONEY TO A RELIGIOUS ORGINIZATION", True],
-    # ["V202028", "IN THE LAST 12 MONTHS HAVE YOU GIVEN MONEY TO ANY OTHER ORGINIZATION", True],
-    # ["V202029", "HAVE YOU POSTED ONLINE ABOUT POLOTICS IN THE LAST 12 MONTHS", True],
-    # ["V202030", "IN THE LAST 12 MONTHS HAVE YOU CONTACTED A MEMBER OF THE US SENATE OR HOUSE OF REP", True],
-    # ["V202034", "IN THE LAST 12 MONTHS HAVE YOU CONTACTED AN ELECTED OFFICIAL IN FEDERAL GOVT", True],
-    # ["V202036", "IN THE LAST 12 MONTHS HAVE YOU CONTECTED A NON-ELECTED OFFICAL IN FEDERAL GOVT", True],
-    # ["V202040", "IN THE LAST 12 MONTHS HAVE YOU CONTACTED A NON-ELECTED LOCAL OFFICAL", True],
-    # ["V202038", "IN THE LAST 12 MONTHS HAVE YOU CONTACTED AN ELECTED LOCAL/STATE OFFICAL", True],
-    # ["V202042", "HOW OFTEN BOUGHT OR BOYCOTTED PRODUCT/SERVICE FOR SOCIAL/POLITICAL REASONS", True],
-    # ["V202051", "REGISTED TO VOTE", True],
-    # ["V202054a", "WHAT STATE ARE YOU CURRENTLY IN", True],
-    # ["V202054b", "WHAT STATE ARE YOU VOTING IN", True],
-    # ["V202061", "HOW LONG HAVE YOU BEEN REGISTERED TO VOTE THERE", True],
-    # ["V202074", "DO YOU STRONGLY LIKE WHO YOU VOTED FOR", True],
-    # ["V202075", "HOW LONG BEFORE THE ELECTION DID YOU MAKE THE DECISION TO VOTE", True],
-    # ["V202118", "HOW DO YOU USUALLY VOTE", True],
-    # ["V202119", "HOW DIFFICULT WAS IT FOR YOU TO VOTE", True],
+    ["V202001", "SELECT LANGUAGE", True],
+    ["V202008", "DID PEOPLE TELL YOU TO VOTE", True],
+    ["V202009", "DID YOU TELL PEOPLE WHY THEY SHOULD VOTE", True],
+    ["V202013", "DID YOU PARTICIPATE IN ANY ONLINE MEETING, RALLIE, SPEACHES, OR FUNDRAISERS", True],
+    ["V202014", "DID YOU GO TO ANY IN ANY IN PERSON MEETING, RALLIE, SPEACHES, OR FUNDRAISERS", True],
+    ["V202015", "DO YOU WEAR ANY CAMPAIN MERCH", True],
+    ["V202016", "DID YOU DO ANY WORK FOR A CANDIDATE", True],
+    ["V202017", "DID YOU DONATE TO A CANDIDATE", True],
+    ["V202019", "DID YOU DONATE ANY MONEY TO A PARTY", True],
+    ["V202022", "DO YOU DISCUSS POLITICS WITH FAMILY OR FRIENDS", True],
+    ["V202023", "HOW OFTEN DO YOU DISCUSS POLOTICS IN A WEEK", True],
+    ["V202024", "HAVE YOU GOTTEN INTO A POLITICAL ARGUMENT IN THE LAST 12 MONTHS", True],
+    ["V202025", "IN THE LAST 12 MONTHS HAVE YOU GONE TO A PROTEXT, MARCH, RALLY, OR DEMINSTRATION", True],
+    ["V202026", "IN THE LAST 12 MONTHS HAVE YOU SIGNED A PETITION", True],
+    ["V202027", "IN THE LAST 12 MONTHS HAVE YOU GIVEN MONEY TO A RELIGIOUS ORGINIZATION", True],
+    ["V202028", "IN THE LAST 12 MONTHS HAVE YOU GIVEN MONEY TO ANY OTHER ORGINIZATION", True],
+    ["V202029", "HAVE YOU POSTED ONLINE ABOUT POLOTICS IN THE LAST 12 MONTHS", True],
+    ["V202030", "IN THE LAST 12 MONTHS HAVE YOU CONTACTED A MEMBER OF THE US SENATE OR HOUSE OF REP", True],
+    ["V202034", "IN THE LAST 12 MONTHS HAVE YOU CONTACTED AN ELECTED OFFICIAL IN FEDERAL GOVT", True],
+    ["V202036", "IN THE LAST 12 MONTHS HAVE YOU CONTECTED A NON-ELECTED OFFICAL IN FEDERAL GOVT", True],
+    ["V202040", "IN THE LAST 12 MONTHS HAVE YOU CONTACTED A NON-ELECTED LOCAL OFFICAL", True],
+    ["V202038", "IN THE LAST 12 MONTHS HAVE YOU CONTACTED AN ELECTED LOCAL/STATE OFFICAL", True],
+    ["V202042", "HOW OFTEN BOUGHT OR BOYCOTTED PRODUCT/SERVICE FOR SOCIAL/POLITICAL REASONS", True],
+    ["V202051", "REGISTED TO VOTE", True],
+    ["V202054a", "WHAT STATE ARE YOU CURRENTLY IN", True],
+    ["V202054b", "WHAT STATE ARE YOU VOTING IN", True],
+    ["V202061", "HOW LONG HAVE YOU BEEN REGISTERED TO VOTE THERE", True],
+    ["V202074", "DO YOU STRONGLY LIKE WHO YOU VOTED FOR", True],
+    ["V202075", "HOW LONG BEFORE THE ELECTION DID YOU MAKE THE DECISION TO VOTE", True],
+    ["V202118", "HOW DO YOU USUALLY VOTE", True],
+    ["V202119", "HOW DIFFICULT WAS IT FOR YOU TO VOTE", True],
     #THEMEMITERS
     ["V202159", "CHRISTIAN VALUES", False],
     ["V202160", "FEMINISTS", False],
@@ -71,25 +71,25 @@ xpairs = [
     ["V202186", "WHO", False],
     ["V202187", "CDC", False],
     #MOST IMPORTATNT PROBLEMS
-    # ["V202205y1", "MOST IMPORTANT PROBLEMS FACING THE COUNTRY", True],
+    ["V202205y1", "MOST IMPORTANT PROBLEMS FACING THE COUNTRY", True],
     # #OTHERS
-    # ["V202215", "HOW WELL DO YOU UNDERSTAND IMPORTANT ISSUES", True],
-    # ["V202220", "HOW IMPORTANT IS IT THAT MORE HISPANICS GET ELECTED", True],
-    # ["V202221", "HOW IMPORTANT IS IT THAT MORE BLACKS GET ELECTED", True],
-    # ["V202222", "HOW IMPORTANT IS IT THAT MORE ASIANS GET ELECTED", True],
-    # ["V202223", "HOW IMPORTANT IS IT THAT MORE LGBT GET ELECTED", True],
-    # ["V202224", "HOW IMPORTANT IS IT THAT MORE WOMEN GET ELECTED", True],
-    # ["V202225", "SHOULD THERE BE LIMITS ON CAMPAIN SPENDING", True],
-    # ["V202229", "LIMITS ON IMPORTS", True],
-    # ["V202232", "WHAT SHOULD IMIGRATION LEVELS BE", True],
-    # ["V202233", "HOW LIKELY IMMIGRATION WILL TAKE AWAY JOBS", True],
-    # ["V202234", "SHOULD WE ACCEPT REFUGEES", True],
-    # ["V202237", "WHAT IS THE EFFECT OF ILLEGAL IMMIGRATION ON CRIME RATE", True],
-    # ["V202243", "RETURN IMMIGRANTS TO THEIR COUNTRY", True],
-    # ["V202249", "DEI", True],
-    # ["V202253", "SHOULD WE HAVE LESS GOVERNMENT", True],
-    # ["V202257", "REDUCE INCOME INEQUALITY", True],
-    # ["V202260", "SOCIETY SHOULD ENFORCE EQUALITY", True],
+    ["V202215", "HOW WELL DO YOU UNDERSTAND IMPORTANT ISSUES", True],
+    ["V202220", "HOW IMPORTANT IS IT THAT MORE HISPANICS GET ELECTED", True],
+    ["V202221", "HOW IMPORTANT IS IT THAT MORE BLACKS GET ELECTED", True],
+    ["V202222", "HOW IMPORTANT IS IT THAT MORE ASIANS GET ELECTED", True],
+    ["V202223", "HOW IMPORTANT IS IT THAT MORE LGBT GET ELECTED", True],
+    ["V202224", "HOW IMPORTANT IS IT THAT MORE WOMEN GET ELECTED", True],
+    ["V202225", "SHOULD THERE BE LIMITS ON CAMPAIN SPENDING", True],
+    ["V202229", "LIMITS ON IMPORTS", True],
+    ["V202232", "WHAT SHOULD IMIGRATION LEVELS BE", True],
+    ["V202233", "HOW LIKELY IMMIGRATION WILL TAKE AWAY JOBS", True],
+    ["V202234", "SHOULD WE ACCEPT REFUGEES", True],
+    ["V202237", "WHAT IS THE EFFECT OF ILLEGAL IMMIGRATION ON CRIME RATE", True],
+    ["V202243", "RETURN IMMIGRANTS TO THEIR COUNTRY", True],
+    ["V202249", "DEI", True],
+    ["V202253", "SHOULD WE HAVE LESS GOVERNMENT", True],
+    ["V202257", "REDUCE INCOME INEQUALITY", True],
+    ["V202260", "SOCIETY SHOULD ENFORCE EQUALITY", True],
     #SO MANY QUESTIONS.... PAUSED HERE I CAN ADD MORE LATER
 ]
 
@@ -117,11 +117,17 @@ def make_map(pairs, data):
 
     return m
 
-def one_hot_encode(data, dataMap):
+def one_hot_encode(data, dataMap, exludeIfBadMap):
     encoded_data = []
+    ignore_column = [False] * data.shape[0]
     index_map = {}
     index_end = 0
 
+    for key in exludeIfBadMap:
+        for idx, answer in enumerate(data[key]):
+            if answer < 0:
+                ignore_column[idx] = True
+ 
     for key in dataMap:
         col_data = []
         question = dataMap[key]
@@ -129,13 +135,17 @@ def one_hot_encode(data, dataMap):
 
         if length:
             column = data[key]
-            for value in column:
+
+            for idx, value in enumerate(column):
                 encode = np.zeros(length)
                 encode[dataMap[key][2][value]] = 1
-                col_data.append(encode)
+                if ignore_column[idx] == False: 
+                    col_data.append(encode)
         else:
-            for value in data[key]:
-                col_data.append(np.array([value]))
+            for idx, value in enumerate(data[key]):
+                if ignore_column[idx] == False: 
+                    col_data.append(np.array([value]))
+
         encoded_data.append(col_data)
         
         index_start = index_end 
@@ -160,16 +170,16 @@ def one_hot_encode(data, dataMap):
 data = pd.read_csv('./anes_timeseries_2020_csv_20220210.csv')
 
 xMap = make_map(xpairs, data)
-
 yMap = make_map(ypairs, data)
+
 # Print the headers
-X, input_keys = one_hot_encode(data, xMap)
-y, _ = one_hot_encode(data, yMap)
+X, input_keys = one_hot_encode(data, xMap, yMap)
+y, _ = one_hot_encode(data, yMap, yMap)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # Initialize the Random Forest classifier
-clf = RandomForestClassifier(n_estimators=100, max_depth=10)
+clf = RandomForestClassifier(n_estimators=1000, max_depth=10)
 
 # Train the ensemble model
 clf.fit(X_train, y_train)
