@@ -208,11 +208,9 @@ def make_clasifier(forest_name, xpairs, ypairs, data, print_info=True):
     # Train the ensemble model
     clf.fit(X_train, y_train)
 
-    # Make predictions on the test set
-    y_pred = clf.predict(X_test)
-
     # Evaluate the model
     if print_info:
+        y_pred = clf.predict(X_test)
         print(forest_name)
         print("Accuracy:", accuracy_score(y_test, y_pred))
         print("\nClassification Report:\n", classification_report(y_test, y_pred, zero_division=0))
@@ -235,8 +233,71 @@ def make_clasifier(forest_name, xpairs, ypairs, data, print_info=True):
 
     return clf, xMap, yMap
     
+def filter_questions(all_questions, filter_array):
+    return [pair for pair in all_questions if pair[0] in filter_array]
 
-main_clasifier = make_clasifier("All Questions", xpairs, ypairs, data, True)
+make_clasifier("All Questions", xpairs, ypairs, data, True)
+
+hispanics = [
+    "V202220", "V202232", "V202233", "V202234"
+]
+
+make_clasifier("Hispanic Questions", filter_questions(xpairs, hispanics), ypairs, data, True)
+
+blacks = [
+    "V202221"
+]
+
+make_clasifier("Black Questions", filter_questions(xpairs, blacks), ypairs, data, True)
+
+asians = [
+    "V202222"
+]
+
+make_clasifier("Asian Questions", filter_questions(xpairs, asians), ypairs, data, True)
+
+lgbt = [
+    "V202223"
+]
+
+make_clasifier("LGBT Questions", filter_questions(xpairs, lgbt), ypairs, data, True)
+
+women = [
+    "V202224"
+]
+
+make_clasifier("Woman Questions", filter_questions(xpairs, women), ypairs, data, True)
+
+immigration_related = [
+    "V202232", "V202233", "V202237", "V202238", "V202243"
+]
+
+make_clasifier("Immigration Questions", filter_questions(xpairs, immigration_related), ypairs, data, True)
+
+issues_of_interest = [
+    "V202205y1", "V202249", "V202253", "V202257", "V202260"
+]
+
+make_clasifier("Issues of Interest Questions", filter_questions(xpairs, issues_of_interest), ypairs, data, True)
+
+political_participation = [
+    "V202001", "V202008", "V202009", "V202013", "V202014", "V202015", "V202016", "V202017",
+    "V202019", "V202022", "V202023", "V202024", "V202025", "V202026", "V202029", "V202030", 
+    "V202034", "V202036", "V202040", "V202038", "V202042", "V202051", "V202054a", "V202054b", 
+    "V202061", "V202074", "V202075", "V202118", "V202119"
+]
+
+make_clasifier("Political Perticipation Questions", filter_questions(xpairs, political_participation), ypairs, data, True)
+
+sociopolitical_views = [
+    "V202159", "V202160", "V202161", "V202162", "V202163", "V202164", "V202165", "V202166", 
+    "V202167", "V202168", "V202169", "V202170", "V202171", "V202172", "V202173", "V202174", 
+    "V202175", "V202176", "V202177", "V202178", "V202179", "V202180", "V202181", "V202182", 
+    "V202183", "V202184", "V202185", "V202186", "V202187"
+]
+
+make_clasifier("Sociopolitical View Questions", filter_questions(xpairs, sociopolitical_views), ypairs, data, True)
+
 
 for pair in xpairs:
     answer_key = "V202073"
