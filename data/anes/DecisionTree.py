@@ -7,6 +7,9 @@ from sklearn.tree import export_text
 import numpy as np
 import pandas as pd
 
+# Load data from CSV
+data = pd.read_csv('./anes_timeseries_2020_csv_20220210.csv')
+
 xpairs = [
     ["V202001", "SELECT LANGUAGE", True],
     ["V202008", "DID PEOPLE TELL YOU TO VOTE", True],
@@ -85,6 +88,7 @@ xpairs = [
     ["V202233", "HOW LIKELY IMMIGRATION WILL TAKE AWAY JOBS", True],
     ["V202234", "SHOULD WE ACCEPT REFUGEES", True],
     ["V202237", "WHAT IS THE EFFECT OF ILLEGAL IMMIGRATION ON CRIME RATE", True],
+    ["V202238", "EFFECT OF ILLEGAL IMMIGRATION ON CRIME RATE (STRENGTH)", True],
     ["V202243", "RETURN IMMIGRANTS TO THEIR COUNTRY", True],
     ["V202249", "DEI", True],
     ["V202253", "SHOULD WE HAVE LESS GOVERNMENT", True],
@@ -166,40 +170,91 @@ def one_hot_encode(data, dataMap, exludeIfBadMap):
 
     return encoded_data, index_map
 
-# Load data from CSV
-data = pd.read_csv('./anes_timeseries_2020_csv_20220210.csv')
+def answer_to_one_hot(question, answer, questionMap):
+    question_key = questionMap[question][2]
+    one_hot = [0] * question_key["length"]
+    one_hot[question_key[answer]] = 1
+    return one_hot
 
-xMap = make_map(xpairs, data)
-yMap = make_map(ypairs, data)
+def decode_prediction(answer, output, labelMap):
+    encoding_map = labelMap[answer][2]
+    decoding_map = {value: key for key, value in encoding_map.items() if key != "length"}
+    return decoding_map[np.argmax(output == 1)]
 
-# Print the headers
-X, input_keys = one_hot_encode(data, xMap, yMap)
-y, _ = one_hot_encode(data, yMap, yMap)
+def make_prediction(predictor, xMap, yMap, question_code, answer_code, question_answer):
+    one_hot = [answer_to_one_hot(question_code, question_answer, xMap)]
+    answer_one_hot = predictor.predict(one_hot)[0]
+    answer_index = np.argmax(answer_one_hot == 1)
+    answer_prediction = predictor.predict_proba(one_hot)[answer_index][0][1]
+    answer = decode_prediction(answer_code, answer_one_hot, yMap)
+    return answer, answer_prediction
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+def make_clasifier(forest_name, xpairs, ypairs, data, print_info=True):
+    xMap = make_map(xpairs, data)
+    yMap = make_map(ypairs, data)
 
-# Initialize the Random Forest classifier
-clf = RandomForestClassifier(n_estimators=100, max_depth=10)
+    # Print the headers
+    X, input_keys = one_hot_encode(data, xMap, yMap)
+    y, _ = one_hot_encode(data, yMap, yMap)
 
-# Train the ensemble model
-clf.fit(X_train, y_train)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# Make predictions on the test set
-y_pred = clf.predict(X_test)
+    # Initialize the Random Forest classifier
+    clf = RandomForestClassifier(n_estimators=100, max_depth=3)
 
-# Evaluate the model
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print("\nClassification Report:\n", classification_report(y_test, y_pred))
+    # Train the ensemble model
+    clf.fit(X_train, y_train)
 
-importances = clf.feature_importances_
-sorted_indices = np.argsort(importances)[::-1]
+    # Make predictions on the test set
+    y_pred = clf.predict(X_test)
 
-added_questions = {}
-questions = []
+    # Evaluate the model
+    if print_info:
+        print(forest_name)
+        print("Accuracy:", accuracy_score(y_test, y_pred))
+        print("\nClassification Report:\n", classification_report(y_test, y_pred, zero_division=0))
 
-for i in sorted_indices:
-    if input_keys[i]["question"] not in added_questions: 
-        added_questions[input_keys[i]["question"]] = input_keys[i]
-        questions.append([importances[i], input_keys[i]])
+        importances = clf.feature_importances_
+        sorted_indices = np.argsort(importances)[::-1]
 
-[print(question[1]["question"], question[0]) for question in questions]
+        added_questions = {}
+        questions = []
+
+        for i in sorted_indices:
+            if input_keys[i]["question"] not in added_questions: 
+                added_questions[input_keys[i]["question"]] = input_keys[i]
+                questions.append([importances[i], input_keys[i]])
+
+        print("Ranked Question Importance:")
+        [print(question[1]["question"], question[0]) for question in questions]
+        print("")
+
+
+    return clf, xMap, yMap
+    
+
+main_clasifier = make_clasifier("All Questions", xpairs, ypairs, data, True)
+
+for pair in xpairs:
+    answer_key = "V202073"
+
+    response_map = {
+        -9: "Refused",
+        -8: "Don’t know",
+        -7: "No post-election data, deleted due to incomplete interview",
+        -6: "No post-election interview",
+        -1: "Inapplicable",
+        1: "Joe Biden",
+        2: "Donald Trump",
+        3: "Jo Jorgensen",
+        4: "Howie Hawkins",
+        5: "Other candidate {SPECIFY}",
+        7: "Specified as Republican candidate",
+        8: "Specified as Libertarian candidate",
+        11: "Specified as don’t know",
+        12: "Specified as refused"
+    }
+
+    single_question_clasifier, xMap, yMap = make_clasifier(pair[1], [pair], ypairs, data, True)
+
+    # print(response_map[make_prediction(single_question_clasifier, xMap, yMap, "V202237", answer_key, 1)])
