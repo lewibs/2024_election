@@ -1,5 +1,7 @@
 # 2024_election
+Waiting on the 2024 data to be released. Will ideally be published before the year is over
 
+# This is the relative importance of questions
 BLM 0.07413284345147475
 LIBERALS 0.06404203664447221
 JOURNALISTS 0.06044726965713218

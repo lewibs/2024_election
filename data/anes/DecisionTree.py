@@ -40,7 +40,7 @@ xpairs = [
     ["V202118", "HOW DO YOU USUALLY VOTE", True],
     ["V202119", "HOW DIFFICULT WAS IT FOR YOU TO VOTE", True],
     #THEMEMITERS
-    ["V202159", "CHRISTIAN VALUES", False],
+    ["V202159", "CHRISTIANS", False],
     ["V202160", "FEMINISTS", False],
     ["V202161", "LIBERALS", False],
     ["V202162", "UNIONS", False],
@@ -179,7 +179,7 @@ y, _ = one_hot_encode(data, yMap, yMap)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # Initialize the Random Forest classifier
-clf = RandomForestClassifier(n_estimators=1000, max_depth=10)
+clf = RandomForestClassifier(n_estimators=100, max_depth=10)
 
 # Train the ensemble model
 clf.fit(X_train, y_train)
